@@ -1,0 +1,7 @@
+# Ignore sensitive information
+settings.py
+
+# Ignore directories and the database file
+aerarium-venv/
+__pycache__/
+db.sqlite3
