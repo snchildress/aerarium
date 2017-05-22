@@ -99,6 +99,16 @@ def upload_path(instance, filename):
 
 class File(models.Model):
     uploaded_file = models.FileField(upload_to=upload_path)
+    FILE_TYPES = (
+        ('kindle', 'Kindle'),
+        ('apple', 'Apple'),
+        ('nook', 'Nook'),
+        ('google', 'Google'),
+        ('smashwords', 'Smashwords'),
+        ('lightningsource', 'Lightning Source'),
+        ('createspace', 'CreateSpace'),
+    )
+    file_type = models.CharField(max_length=15, choices=FILE_TYPES)
     created_timestamp = models.DateTimeField(auto_now_add=True)
     updated_timestamp = models.DateTimeField(auto_now=True)
 
@@ -106,4 +116,4 @@ class File(models.Model):
         db_table = 'files'
 
     def __str__(self):
-        return self.uploaded_file.name
+        return '%s (%s)' % (self.uploaded_file.name, self.file_type)
