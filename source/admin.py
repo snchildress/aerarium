@@ -1,4 +1,7 @@
 from django.contrib import admin
+from .models import Person, Contract, Title, Book
 
 
-# Register your models here.
+@admin.register(Person, Contract, Title, Book)
+class AerariumAdmin(admin.ModelAdmin):
+    pass
