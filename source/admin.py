@@ -4,4 +4,4 @@ from .models import Person, Contract, Title, Book
 
 @admin.register(Person, Contract, Title, Book)
 class AerariumAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('created_timestamp', 'updated_timestamp')
