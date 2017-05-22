@@ -92,3 +92,18 @@ class Book(models.Model):
 
     def __str__(self):
         return '%s (%s)' % (self.title, self.book_type)
+
+def upload_path(instance, filename):
+# Uploads file to settings.MEDIA_ROOT/<filename>
+    return filename
+
+class File(models.Model):
+    uploaded_file = models.FileField(upload_to=upload_path)
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+    updated_timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'files'
+
+    def __str__(self):
+        return self.uploaded_file.name
