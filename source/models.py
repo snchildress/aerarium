@@ -22,15 +22,15 @@ class Contract(models.Model):
         ('net', 'Net'),
     )
     revshare_type = models.CharField(max_length=5, choices=REVSHARE_TYPES)
-    kindle_inclusive_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    kindle_non_inclusive_commission = models.DecimalField(max_digits=4, decimal_places=3)
-    apple_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    nook_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    google_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    smashwords_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    lightningsource_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    createspace_commission = models.DecimalField(max_digits=3, decimal_places=2)
-    wholesale_commission = models.DecimalField(max_digits=3, decimal_places=2)
+    kindle_inclusive_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    kindle_non_inclusive_reveshare = models.DecimalField(max_digits=4, decimal_places=3)
+    apple_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    nook_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    google_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    smashwords_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    lightningsource_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    createspace_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
+    wholesale_reveshare = models.DecimalField(max_digits=3, decimal_places=2)
     created_timestamp = models.DateTimeField(auto_now_add=True)
     updated_timestamp = models.DateTimeField(auto_now=True)
 
@@ -117,3 +117,47 @@ class File(models.Model):
 
     def __str__(self):
         return '%s (%s)' % (self.uploaded_file.name, self.file_type)
+
+class Transaction(models.Model):
+    book = models.ForeignKey(Book)
+    transaction_date = models.DateField()
+    revenue = models.DecimalField(max_digits=5, decimal_places=2)
+    revshare = models.DecimalField(max_digits=5, decimal_places=2)
+    gross_profit = models.DecimalField(max_digits=5, decimal_places=2)
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+    updated_timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'transactions'
+
+    def __str__(self):
+        return '%s (%s)' % (self.book.title, self.transaction_date)
+
+class Currency(models.Model):
+    CURRENCY_TYPES = (
+        ('GBP', 'GBP'),
+        ('EUR', 'EUR'),
+        ('AUD', 'AUD'),
+        ('JPY', 'JPY'),
+        ('CAD', 'CAD'),
+        ('NOK', 'NOK'),
+        ('CHF', 'CHF'),
+        ('SEK', 'SEK'),
+        ('MXN', 'MXN'),
+        ('NZD', 'NZD'),
+        ('INR', 'INR'),
+        ('BRL', 'BRL'),
+        ('DKK', 'DKK'),
+    )
+    currency = models.CharField(max_length=3, choices=CURRENCY_TYPES)
+    conversion_rate = models.DecimalField(max_digits=6, decimal_places=5)
+    conversion_rate_date = models.DateField()
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+    updated_timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'currencies'
+        verbose_name_plural = 'currencies'
+
+    def __str__(self):
+        return '%s (%s)' % (self.currency, self.conversion_rate_date)
